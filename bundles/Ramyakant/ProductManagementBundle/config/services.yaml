@@ -25,3 +25,8 @@ services:
     Ramyakant\ProductManagementBundle\Service\ProductManagementService:
         autowire: true
         autoconfigure: true
+
+    # auto-register all commands as services
+    Ramyakant\ProductManagementBundle\Command\:
+        resource: '../src/Command/*'
+        tags: [ 'console.command' ]
