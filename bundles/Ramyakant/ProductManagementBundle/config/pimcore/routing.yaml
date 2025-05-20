@@ -1,0 +1,3 @@
+ramyakant_product_management_homepage:
+    path:     /ramyakant_product_management
+    defaults: { _controller: Ramyakant\ProductManagementBundle\Controller\DefaultController::indexAction }
