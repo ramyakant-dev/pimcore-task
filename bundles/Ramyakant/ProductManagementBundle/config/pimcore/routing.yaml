@@ -1,3 +1,9 @@
 ramyakant_product_management_homepage:
     path:     /ramyakant_product_management
     defaults: { _controller: Ramyakant\ProductManagementBundle\Controller\DefaultController::indexAction }
+
+# API endpoint to create and update product
+ramyakant_product_management_api:
+    path: /api/product/update
+    controller: Ramyakant\ProductManagementBundle\Controller\ProductManagementApiController::updateProductAction
+    methods: [POST]
