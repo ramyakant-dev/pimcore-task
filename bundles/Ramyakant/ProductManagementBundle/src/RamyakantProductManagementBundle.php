@@ -18,7 +18,15 @@ class RamyakantProductManagementBundle extends AbstractPimcoreBundle implements 
     public function getJsPaths(): array
     {
         return [
-            '/bundles/ramyakantproductmanagement/js/pimcore/startup.js'
+            '/bundles/ramyakantproductmanagement/js/pimcore/startup.js',
+            '/bundles/ramyakantproductmanagement/js/pimcore/product_form.js'
+        ];
+    }
+
+    public function getCssPaths(): array
+    {
+        return [
+            '/bundles/ramyakantproductmanagement/css/style.css'
         ];
     }
 

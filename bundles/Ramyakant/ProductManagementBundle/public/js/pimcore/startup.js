@@ -7,7 +7,27 @@ pimcore.plugin.RamyakantProductManagementBundle = Class.create({
     },
 
     pimcoreReady: function (e) {
-        // alert("RamyakantProductManagementBundle ready!");
+
+        var navigationUl = Ext.get(Ext.query("#pimcore_navigation UL"));
+        var newMenuItem = Ext.DomHelper.createDom({
+                tag: 'li',
+                id: 'pimcore_menu_update_product',
+                'data-menu-tooltip': t('Update Product'),
+                cls: 'pimcore_menu_item pimcore_icon_product'
+        });
+        
+        navigationUl.appendChild(newMenuItem);
+        pimcore.helpers.initMenuTooltips();
+
+        newMenuItem.onclick = function(){ 
+            pimcore.plugin.RamyakantProductManagementBundleForm.openProductForm(); 
+        };
+        
+    },
+
+    openProductForm: function () {
+        // Delegate to the form handler in a separate file
+        pimcore.plugin.RamyakantProductManagementBundleForm.openProductForm();
     }
 });
 

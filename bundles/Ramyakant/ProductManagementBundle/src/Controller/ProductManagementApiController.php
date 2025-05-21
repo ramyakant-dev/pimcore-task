@@ -26,7 +26,18 @@ class ProductManagementApiController
     public function updateProductAction(Request $request): JsonResponse
     {
         try {
-            $data = json_decode($request->getContent(), true);
+            // Check Content-Type to determine request format
+            $contentType = $request->headers->get('Content-Type');
+            if (stripos($contentType, 'application/json') !== false) {
+                // Handle API request
+                $data = json_decode($request->getContent(), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Invalid JSON payload');
+                }
+            } else {
+                // Handle form
+                $data = $request->request->all();
+            }
 
             // Validate input if SKU or Price is Empty.
             if (!isset($data['sku'], $data['price'])) {
