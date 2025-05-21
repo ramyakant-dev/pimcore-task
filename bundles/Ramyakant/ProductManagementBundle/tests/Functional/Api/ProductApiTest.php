@@ -1,0 +1,127 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Ramyakant\ProductManagementBundle\Tests\Functional\Api;
+
+use Pimcore\Model\DataObject\Product;
+use Pimcore\Test\WebTestCase;
+
+class ProductApiTest extends WebTestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+        self::bootKernel();
+        // Clear test products
+        $product = Product::getBySku('PROD012', ['limit' => 1]);
+        if ($product) {
+            $product->delete();
+        }
+        // Ensure /Products folder exists
+        \Pimcore\Model\DataObject\Service::createFolderByPath('/Products')->save();
+    }
+
+    public function testCreateProductViaApi(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/api/product/update', [], [], [
+            'CONTENT_TYPE' => 'application/json'
+        ], json_encode([
+            'sku' => 'PROD012',
+            'name' => 'API Created Product',
+            'price' => 199.99
+        ]));
+
+        // Assert response
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData['success']);
+        $this->assertStringContainsString('Created', $responseData['message']);
+        $this->assertEquals('PROD012', $responseData['product']['sku']);
+
+        // Assert product in database
+        $product = Product::getBySku('PROD012', ['limit' => 1]);
+        $this->assertNotNull($product);
+        $this->assertEquals('PROD012', $product->getSku());
+        $this->assertEquals('API Created Product', $product->getName());
+        $this->assertEquals('199.99', $product->getPrice());
+    }
+
+    public function testUpdateProductViaApi(): void
+    {
+        // Create initial product
+        $product = new Product();
+        $product->setKey('PROD012');
+        $product->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/Products'));
+        $product->setPublished(true);
+        $product->setSku('PROD012');
+        $product->setName('Initial Product');
+        $product->setPrice('99.99');
+        $product->save();
+
+        $client = static::createClient();
+        $client->request('POST', '/api/product/update', [], [], [
+            'CONTENT_TYPE' => 'application/json'
+        ], json_encode([
+            'sku' => 'PROD012',
+            'name' => 'API Updated Product',
+            'price' => 299.99
+        ]));
+
+        // Assert response
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData['success']);
+        $this->assertStringContainsString('Updated', $responseData['message']);
+        $this->assertEquals('API Updated Product', $responseData['product']['name']);
+
+        // Assert updated product
+        $product = Product::getBySku('PROD012', ['limit' => 1]);
+        $this->assertNotNull($product);
+        $this->assertEquals('API Updated Product', $product->getName());
+        $this->assertEquals('299.99', $product->getPrice());
+    }
+
+    public function testInvalidRequest(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/api/product/update', [], [], [
+            'CONTENT_TYPE' => 'application/json'
+        ], json_encode(['name' => 'Invalid Product']));
+
+        // Assert error response
+        $response = $client->getResponse();
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString(
+            json_encode(['success' => false, 'message' => 'Mandatory fields: sku and price.']),
+            $response->getContent()
+        );
+    }
+
+    public function testFormSubmission(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/api/product/update', [
+            'sku' => 'PROD012',
+            'name' => 'Form Product',
+            'price' => 249.99
+        ]);
+
+        // Assert response
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData['success']);
+        $this->assertStringContainsString('Created', $responseData['message']);
+        $this->assertEquals('Form Product', $responseData['product']['name']);
+
+        // Assert product in database
+        $product = Product::getBySku('PROD012', ['limit' => 1]);
+        $this->assertNotNull($product);
+        $this->assertEquals('Form Product', $product->getName());
+        $this->assertEquals('249.99', $product->getPrice());
+    }
+}
