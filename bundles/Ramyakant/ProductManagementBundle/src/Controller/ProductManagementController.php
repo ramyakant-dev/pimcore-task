@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProductManagementApiController
+class ProductManagementController
 {
     private ProductManagementService $productManagementService;
 

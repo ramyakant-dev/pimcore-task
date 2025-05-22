@@ -94,8 +94,8 @@ services:
             test-db:
                 condition: service_healthy
         volumes:
-            - pimcore-test-var:/var/www/html/var
-            - pimcore-test-public-var:/var/www/html/public/var
+            - .:/var/www/html
+            - ./.docker/messenger.yaml:/var/www/html/config/packages/messenger.yaml:ro
 
 volumes:
     pimcore-database:

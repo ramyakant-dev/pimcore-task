@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ramyakant\ProductManagementBundle\Tests\Controller;
+namespace Ramyakant\ProductManagementBundle\Tests\Unit;
 
 use Pimcore\Model\DataObject\Product;
-use Ramyakant\ProductManagementBundle\Controller\ProductManagementApiController;
+use Ramyakant\ProductManagementBundle\Controller\ProductManagementController;
 use Ramyakant\ProductManagementBundle\Service\ProductManagementService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use PHPUnit\Framework\TestCase;
 
-class ProductManagementApiControllerTest extends TestCase
+class ProductManagementControllerTest extends TestCase
 {
-    private ProductManagementApiController $controller;
+    private ProductManagementController $controller;
     private ProductManagementService $serviceMock;
 
     protected function setUp(): void
     {
         $this->serviceMock = $this->createMock(ProductManagementService::class);
-        $this->controller = new ProductManagementApiController($this->serviceMock);
+        $this->controller = new ProductManagementController($this->serviceMock);
     }
 
     public function testCreateProductWithFormData(): void

@@ -2,32 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Ramyakant\ProductManagementBundle\Tests\Functional\Api;
+namespace Ramyakant\ProductManagementBundle\Tests\Functional;
 
 use Pimcore\Model\DataObject\Product;
 use Pimcore\Test\WebTestCase;
 
 class ProductApiTest extends WebTestCase
 {
+    protected $client;
+
     protected function setUp(): void
     {
         parent::setUp();
-        self::bootKernel();
-        // Clear test products
-        $product = Product::getBySku('PROD012', ['limit' => 1]);
-        if ($product) {
-            $product->delete();
-        }
-        // Ensure /Products folder exists
-        \Pimcore\Model\DataObject\Service::createFolderByPath('/Products')->save();
+
+        $this->client = static::createClient();
+
+        $product = new Product();
+        $product->setKey('PROD011');
+        $product->setPublished(true);
+        $product->setSku('PROD011');
+        $product->setName('Initial Product');
+        $product->setPrice('99.99');
+        $product->save();
     }
 
     public function testCreateProductViaApi(): void
     {
         $client = static::createClient();
-        $client->request('POST', '/api/product/update', [], [], [
-            'CONTENT_TYPE' => 'application/json'
-        ], json_encode([
+        $client->request('POST', '/api/product/update', [], [], [ 'CONTENT_TYPE' => 'application/json'], 
+        json_encode([
             'sku' => 'PROD012',
             'name' => 'API Created Product',
             'price' => 199.99
