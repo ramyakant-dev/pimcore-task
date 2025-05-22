@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ramyakant\ProductManagementBundle\Tests\Functional\Api;
+namespace Ramyakant\ProductManagementBundle\Tests\Functional;
 
 use Pimcore\Model\DataObject\Product;
 use Pimcore\Test\WebTestCase;

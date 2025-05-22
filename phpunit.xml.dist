@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true">
-  <testsuites>
-    <testsuite name="Bundle Tests">
-      <directory>bundles/Ramyakant/ProductManagementBundle/tests</directory>
-      <exclude>bundles/Ramyakant/ProductManagementBundle/tests/Controller/DefaultControllerTest.php</exclude>
-    </testsuite>
-  </testsuites>
-  <php>
-    <env name="SYMFONY_ENV" value="test"/>
-    <env name="PIMCORE_TEST" value="1"/>
-    <env name="KERNEL_CLASS" value="App\Kernel"/>
-    <env name="DATABASE_URL" value="mysql://pimcore:pimcore@test-db:3306/pimcore_test?charset=utf8mb4"/>
-    <const name="PIMCORE_PROJECT_ROOT" value="/var/www/html"/>
-  </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="bundles/Ramyakant/ProductManagementBundle/tests/bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="ProductManagementBundle Tests">
+            <directory>bundles/Ramyakant/ProductManagementBundle/tests/</directory>
+            <exclude>bundles/Ramyakant/ProductManagementBundle/tests/Controller/DefaultControllerTest.php</exclude>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="APP_ENV" value="test" force="true"/>
+        <server name="PIMCORE_TEST_DB_DSN" value="mysql://pimcore:pimcore@test-db:3306/pimcore"/>
+        <server name="KERNEL_CLASS" value="App\Kernel"/>
+    </php>
+    <coverage>
+        <include>
+            <directory suffix=".php">bundles/Ramyakant/ProductManagementBundle/src/</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">bundles/Ramyakant/ProductManagementBundle/tests/</directory>
+            <directory suffix=".php">vendor/</directory>
+        </exclude>
+    </coverage>
 </phpunit>
