@@ -47,4 +47,7 @@ nbproject
 
 # temp
 .temp
+# Cache
 cache
+# PHPUnit cache file
+/.phpunit.result.cache

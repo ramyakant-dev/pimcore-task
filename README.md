@@ -35,6 +35,15 @@ Use Docker to set up this project. You don't need to have a PHP environment with
     * The frontend: <http://localhost>
     * The admin interface, using the credentials you have chosen above: <http://localhost/admin>
 
+### Testing (WIP)
+1. 
+    * During Installation symfony/phpunit-bridge and symfony/browser-kit is installed automatically.
+    * docker-compose.yaml contains necessary services, which can be initialized when testing.
+    * Run `sudo docker compose --profile test up -d` from you project directory to start test-db and test-php services. 
+    * phpunit.xml.dist contains all the necessary settings for testing. 
+    * Tests are located in 'bundles/Ramyakant/ProductManagementBundle/tests'.
+    * Run the tests with `sudo docker compose exec test-php vendor/bin/simple-phpunit`.
+
 ## With PHP environment & composer
 
 1. Clone this project : 
@@ -64,6 +73,3 @@ It might be necessary to update a specific Pimcore module to a version that is n
 In that case, you need to remove the `platform-version` dependency from your `composer.json` and update the module to
 the desired version.
 Be aware that this might lead to a theoretically compatible but untested combination of Pimcore modules.
-
-## Other demo/skeleton packages
-- [Pimcore Basic Demo](https://github.com/pimcore/demo)

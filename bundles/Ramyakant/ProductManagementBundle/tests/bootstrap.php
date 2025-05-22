@@ -13,11 +13,13 @@ define('PIMCORE_CLASS_DIRECTORY', PIMCORE_PROJECT_ROOT . '/var/classes');
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
-use App\Kernel;
+const PROJECT_ROOT = PIMCORE_PROJECT_ROOT;
 
-// Set the test environment
-putenv('APP_ENV=test');
+// set the used pimcore/symfony environment
+foreach (['APP_ENV' => 'test', 'PIMCORE_SKIP_DOTENV_FILE' => true] as $name => $value) {
+    putenv("{$name}={$value}");
+    $_ENV[$name] = $_SERVER[$name] = $value;
+}
 
-// Boot the Pimcore kernel
-$kernel = new Kernel('test', true);
-$kernel->boot();
+\Pimcore\Bootstrap::setProjectRoot();
+\Pimcore\Bootstrap::bootstrap();
