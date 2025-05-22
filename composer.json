@@ -21,11 +21,6 @@
     "symfony/dotenv": "^6.2",
     "symfony/runtime": "^6.2"
   },
-  "require-dev": {
-    "codeception/codeception": "^5.0.3",
-    "codeception/module-symfony": "^3.1.0",
-    "phpunit/phpunit": "^11.5"
-  },
   "suggest": {
     "pimcore/data-hub": "Universal data interface for GraphQL, CSV and other formats"
   },
@@ -55,5 +50,8 @@
       "Pimcore\\Composer::clearCache",
       "Pimcore\\Composer::installAssets"
     ]
+  },
+  "require-dev": {
+    "symfony/phpunit-bridge": "^7.2"
   }
 }
